@@ -1,16 +1,13 @@
 <template>
   <main>
     <ul>
-      <!-- <item></item>
-      <item></item>
-      <item></item>
-      <item></item>
-      <item></item> -->
+      <item />
     </ul>
   </main>
 </template>
 <script>
 import Item from "./Item.vue";
+import { useStore } from "vuex";
 export default {
   name: "Main",
   components: {
