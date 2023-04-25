@@ -18,13 +18,16 @@
                     prepend-icon="mdi-account"
                     variant="underlined"
                     hide-details="true"
+                    v-model="user.uid"
                   ></v-text-field>
 
                   <v-text-field
+                    type="password"
                     label="비밀번호"
                     prepend-icon="mdi-lock"
                     variant="underlined"
                     hide-details="true"
+                    v-model="user.pass"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="4">
@@ -51,13 +54,34 @@
 </template>
 <script setup>
 import { useRouter } from "vue-router";
+import { reactive } from "vue";
+import axios from "axios";
+import { useStore } from "vuex";
 const router = useRouter();
+const store = useStore();
+
+const user = reactive({
+  uid: null,
+  pass: null,
+});
 
 const btnRegister = () => {
   router.push("/user/terms");
 };
 
 const btnLogin = () => {
+  axios
+    .post("http://localhost:8080/Voard/user/login", user)
+    .then((response) => {
+      console.log(response);
+      const accessToken = response.data.accessToken;
+      const user = response.data.user;
+      localStorage.setItem("accessToken", accessToken);
+      store.dispatch("setUser", user);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   router.push("/list");
 };
 </script>

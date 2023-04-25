@@ -1,14 +1,20 @@
 <template>
   <v-app>
     <v-app-bar>
-      <v-sheet max-width="800">
-        <v-app-bar-title>글목록</v-app-bar-title>
-        <v-btn class="float-right" @click="btnLogout">로그아웃</v-btn>
-      </v-sheet>
+      <v-container>
+        <v-sheet class="align-center d-flex mx-auto" max-width="800">
+          <v-app-bar-title>글목록</v-app-bar-title>
+
+          <p>
+            {{ user?.nick }}님 반갑습니다.
+            <v-btn @click="btnLogout">로그아웃</v-btn>
+          </p>
+        </v-sheet>
+      </v-container>
     </v-app-bar>
     <v-main>
       <v-container>
-        <v-sheet max-width="800" class="border mx-auto">
+        <v-sheet max-width="800" class="mx-auto">
           <v-table>
             <thead>
               <tr>
@@ -44,12 +50,13 @@
             </tbody>
           </v-table>
           <v-sheet class="text-right pt-6">
-            <v-btn color="success" @click="btnWrite">글쓰기</v-btn>
+            <v-btn color="primary" @click="btnWrite">글쓰기</v-btn>
           </v-sheet>
+
           <div class="text-center">
             <v-pagination
               :length="100"
-              :total-visible="10"
+              :total-visible="5"
               rounded="circle"
             ></v-pagination>
           </div>
@@ -60,8 +67,14 @@
 </template>
 <script setup>
 import { useRouter } from "vue-router";
+import { useStore } from "vuex";
+import { computed } from "vue";
 const router = useRouter();
+const store = useStore();
+
+const user = computed(() => store.getters.user);
 const btnLogout = () => {
+  localStorage.removeItem("accessToken");
   router.push("/user/login");
 };
 const btnWrite = () => {
