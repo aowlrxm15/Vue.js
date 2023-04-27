@@ -70,6 +70,7 @@ const btnRegister = () => {
 };
 
 const btnLogin = () => {
+  // 전역설정해두면 /user/login만 남기고 삭제
   axios
     .post("http://localhost:8080/Voard/user/login", user)
     .then((response) => {
